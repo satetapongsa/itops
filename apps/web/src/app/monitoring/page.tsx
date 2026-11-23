@@ -131,55 +131,53 @@ export default function MonitoringPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Infrastructure Monitoring Center</h1>
-          <p className="text-sm text-slate-500 mt-1">
-            การติดตามสถานะเซิร์ฟเวอร์ เครือข่าย และระบบจำลองความผิดปกติอัตโนมัติ (Synthetic Simulator)
-          </p>
-        </div>
+    <div className="space-y-6 max-w-7xl mx-auto">
+      <div>
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Infrastructure Monitoring Center</h1>
+        <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          การติดตามสถานะเซิร์ฟเวอร์ เครือข่าย และระบบจำลองความผิดปกติอัตโนมัติ (Synthetic Simulator)
+        </p>
       </div>
 
       {/* Manual Simulation Controls */}
-      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+      <div className="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-sm">
         <div className="text-xs font-semibold text-slate-500 uppercase mb-3 tracking-wider">
           แผงควบคุมการจำลองเหตุการณ์ (Simulation Sandbox Controls)
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
           <button
             onClick={() => triggerSimulation('SERVER_DOWN')}
             disabled={isSimulating}
-            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold shadow transition"
+            className="flex items-center justify-center gap-2 px-3.5 py-2.5 bg-red-600 hover:bg-red-700 active:scale-95 text-white rounded-lg text-xs font-semibold shadow transition"
           >
-            <Flame className="w-4 h-4" />
-            Simulate Server Down (สร้าง Incident P1 อัตโนมัติ)
+            <Flame className="w-4 h-4 shrink-0" />
+            <span>Simulate Server Down (P1)</span>
           </button>
           <button
             onClick={() => triggerSimulation('CPU_SPIKE')}
             disabled={isSimulating}
-            className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-semibold shadow transition"
+            className="flex items-center justify-center gap-2 px-3.5 py-2.5 bg-amber-600 hover:bg-amber-700 active:scale-95 text-white rounded-lg text-xs font-semibold shadow transition"
           >
-            <Cpu className="w-4 h-4" />
-            Simulate CPU Spike (&gt;90%)
+            <Cpu className="w-4 h-4 shrink-0" />
+            <span>Simulate CPU Spike (&gt;90%)</span>
           </button>
           <button
             onClick={() => triggerSimulation('RECOVERY')}
             disabled={isSimulating}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow transition"
+            className="flex items-center justify-center gap-2 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-lg text-xs font-semibold shadow transition"
           >
-            <CheckCircle2 className="w-4 h-4" />
-            Simulate Recovery (กู้คืนสถานะปกติ)
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <span>Simulate Recovery (ปกติ)</span>
           </button>
         </div>
       </div>
 
       {/* Target Status Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         {targets.map((tgt) => (
           <div
             key={tgt.id}
-            className={`bg-white rounded-xl border p-5 shadow-sm transition ${
+            className={`bg-white rounded-xl border p-4 sm:p-5 shadow-sm transition ${
               tgt.status === MonitoringStatus.DOWN
                 ? 'border-red-300 ring-2 ring-red-100'
                 : tgt.status === MonitoringStatus.DEGRADED
@@ -188,15 +186,15 @@ export default function MonitoringPage() {
             }`}
           >
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <div className="flex items-center gap-2.5">
-                <Server className="w-5 h-5 text-slate-600" />
-                <div>
-                  <div className="font-bold text-slate-900 text-sm">{tgt.hostname}</div>
-                  <div className="text-[11px] text-slate-400">{tgt.ipAddress}</div>
+              <div className="flex items-center gap-2.5 min-w-0">
+                <Server className="w-5 h-5 text-slate-600 shrink-0" />
+                <div className="min-w-0">
+                  <div className="font-bold text-slate-900 text-sm truncate">{tgt.hostname}</div>
+                  <div className="text-[11px] text-slate-400 truncate">{tgt.ipAddress}</div>
                 </div>
               </div>
               <span
-                className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                className={`px-2.5 py-0.5 rounded-full text-xs font-bold shrink-0 ${
                   tgt.status === MonitoringStatus.UP
                     ? 'bg-emerald-100 text-emerald-800'
                     : tgt.status === MonitoringStatus.DOWN
@@ -233,8 +231,8 @@ export default function MonitoringPage() {
               </div>
 
               <div className="flex justify-between pt-2 border-t border-slate-50 text-[11px] text-slate-400">
-                <span>Response Time: {tgt.responseTimeMs} ms</span>
-                <span>{tgt.location}</span>
+                <span>Latency: {tgt.responseTimeMs} ms</span>
+                <span className="truncate max-w-[120px]">{tgt.location}</span>
               </div>
             </div>
           </div>
@@ -242,16 +240,16 @@ export default function MonitoringPage() {
       </div>
 
       {/* Simulation Events Feed */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-        <h2 className="font-bold text-slate-800 text-base mb-3">บันทึกเหตุการณ์เฝ้าระวัง (Monitoring Event Stream)</h2>
-        <div className="space-y-2 text-xs font-mono">
+      <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 shadow-sm overflow-hidden">
+        <h2 className="font-bold text-slate-800 text-sm sm:text-base mb-3">บันทึกเหตุการณ์เฝ้าระวัง (Monitoring Event Stream)</h2>
+        <div className="space-y-2 text-xs font-mono max-h-60 overflow-y-auto">
           {simulationLog.length === 0 ? (
             <div className="text-slate-400 italic">กดปุ่ม Simulation ด้านบนเพื่อทดสอบกลไกตรวจจับและสร้าง Incident อัตโนมัติ</div>
           ) : (
             simulationLog.map((log, idx) => (
               <div
                 key={idx}
-                className={`p-2.5 rounded-lg border ${
+                className={`p-2.5 rounded-lg border leading-relaxed break-words ${
                   log.includes('CRITICAL')
                     ? 'bg-red-50 text-red-800 border-red-200'
                     : log.includes('WARNING')

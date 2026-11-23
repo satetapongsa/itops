@@ -74,77 +74,107 @@ export default function AssetsPage() {
   );
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">IT Asset Management (ITAM)</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">IT Asset Management (ITAM)</h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
             ทะเบียนทรัพย์สินอุปกรณ์ไอที ฮาร์ดแวร์ ซอฟต์แวร์ และประวัติการส่งมอบ
           </p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={handleExportCsv}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-lg text-sm font-medium transition shadow-sm"
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-lg text-xs sm:text-sm font-medium transition shadow-sm w-full sm:w-auto"
           >
             <Download className="w-4 h-4 text-slate-500" />
-            ส่งออก CSV (Export Inventory)
+            ส่งออก CSV (Export)
           </button>
         </div>
       </div>
 
       {/* Search Bar */}
-      <div className="relative max-w-md">
+      <div className="relative max-w-md w-full">
         <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="ค้นหาตาม Asset Tag, ชื่ออุปกรณ์, Serial Number..."
-          className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="ค้นหา Asset Tag, ชื่ออุปกรณ์, Serial..."
+          className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
-      {/* Assets Table */}
+      {/* Assets Table / Mobile Cards */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase">
-            <tr>
-              <th className="px-6 py-3">Asset Tag</th>
-              <th className="px-6 py-3">ชื่ออุปกรณ์ (Device Name)</th>
-              <th className="px-6 py-3">ประเภท</th>
-              <th className="px-6 py-3">Serial Number</th>
-              <th className="px-6 py-3">สถานะ (Status)</th>
-              <th className="px-6 py-3">ผู้ถือครอง (Assigned To)</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {filtered.map((a) => (
-              <tr key={a.id} className="hover:bg-slate-50/80 transition">
-                <td className="px-6 py-4 font-semibold text-blue-600">{a.assetTag}</td>
-                <td className="px-6 py-4 font-medium text-slate-800">{a.name}</td>
-                <td className="px-6 py-4 text-xs text-slate-600">{a.type}</td>
-                <td className="px-6 py-4 text-xs font-mono text-slate-500">{a.serialNumber || '-'}</td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                      a.status === AssetStatus.ASSIGNED
-                        ? 'bg-blue-100 text-blue-700'
-                        : a.status === AssetStatus.IN_STOCK
-                        ? 'bg-emerald-100 text-emerald-700'
-                        : 'bg-amber-100 text-amber-700'
-                    }`}
-                  >
-                    {a.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-xs text-slate-700">
-                  {a.assignedUser ? `${a.assignedUser.name}` : <span className="text-slate-400 italic">ว่างในคลัง (In Stock)</span>}
-                </td>
+        {/* Desktop Table */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase">
+              <tr>
+                <th className="px-6 py-3">Asset Tag</th>
+                <th className="px-6 py-3">ชื่ออุปกรณ์ (Device Name)</th>
+                <th className="px-6 py-3">ประเภท</th>
+                <th className="px-6 py-3">Serial Number</th>
+                <th className="px-6 py-3">สถานะ (Status)</th>
+                <th className="px-6 py-3">ผู้ถือครอง (Assigned To)</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {filtered.map((a) => (
+                <tr key={a.id} className="hover:bg-slate-50/80 transition">
+                  <td className="px-6 py-4 font-semibold text-blue-600">{a.assetTag}</td>
+                  <td className="px-6 py-4 font-medium text-slate-800">{a.name}</td>
+                  <td className="px-6 py-4 text-xs text-slate-600">{a.type}</td>
+                  <td className="px-6 py-4 text-xs font-mono text-slate-500">{a.serialNumber || '-'}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                        a.status === AssetStatus.ASSIGNED
+                          ? 'bg-blue-100 text-blue-700'
+                          : a.status === AssetStatus.IN_STOCK
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : 'bg-amber-100 text-amber-700'
+                      }`}
+                    >
+                      {a.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-xs text-slate-700">
+                    {a.assignedUser ? `${a.assignedUser.name}` : <span className="text-slate-400 italic">ว่างในคลัง (In Stock)</span>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile Cards */}
+        <div className="md:hidden divide-y divide-slate-100">
+          {filtered.map((a) => (
+            <div key={a.id} className="p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-xs text-blue-600">{a.assetTag}</span>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                    a.status === AssetStatus.ASSIGNED
+                      ? 'bg-blue-100 text-blue-700'
+                      : a.status === AssetStatus.IN_STOCK
+                      ? 'bg-emerald-100 text-emerald-700'
+                      : 'bg-amber-100 text-amber-700'
+                  }`}
+                >
+                  {a.status}
+                </span>
+              </div>
+              <div className="font-semibold text-sm text-slate-900">{a.name}</div>
+              <div className="flex justify-between text-xs text-slate-500 pt-1 border-t border-slate-50">
+                <span>{a.type} • S/N: {a.serialNumber || '-'}</span>
+                <span className="text-slate-700 font-medium">{a.assignedUser ? a.assignedUser.name : 'In Stock'}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
