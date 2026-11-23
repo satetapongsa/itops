@@ -1,0 +1,30 @@
+{
+  "name": "opspilot-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r run build",
+    "dev": "pnpm --parallel run dev",
+    "test": "pnpm -r run test",
+    "lint": "pnpm -r run lint",
+    "typecheck": "pnpm -r run typecheck",
+    "db:generate": "pnpm --filter @opspilot/api prisma generate",
+    "db:migrate": "pnpm --filter @opspilot/api prisma migrate dev",
+    "db:seed": "pnpm --filter @opspilot/api run seed"
+  },
+  "devDependencies": {
+    "@prisma/client": "^7.10.1",
+    "prettier": "^3.5.3",
+    "prisma": "^7.10.1",
+    "typescript": "^5.7.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "argon2",
+      "prisma",
+      "msgpackr-extract",
+      "@scarf/scarf"
+    ]
+  }
+}

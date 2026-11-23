@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm --filter @opspilot/shared run build && pnpm --filter @opspilot/api-contracts run build && pnpm --filter @opspilot/web run build",
+  "outputDirectory": "apps/web/.next",
+  "framework": "nextjs"
+}
